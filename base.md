@@ -53,11 +53,36 @@ k-means sur embeddings, HDBSCAN
 
 - BEATs (auto-supervisé) + Attentive probing (https://doi.org/10.1016/j.ecoinf.2026.103765), (https://github.com/microsoft/unilm/tree/master/beats)
 - VGG16 (CNN) + LM spectrogram audio (https://doi.org/10.3390/jimaging8040096)
+- dasheng (https://github.com/XiaoMi/dasheng)
+- Kimi-audio (https://github.com/MoonshotAI/Kimi-Audio)
+- Dinov2 (https://github.com/facebookresearch/dinov2)
 
-AST, PaSST, YAMNet
+### Données audio nécéssaires à chaque modèle
+
+- BEATs : Audio brut resampling 16kHz (préféré)
+- VGG16 : Mel spectrogramme
+- dasheng : Audio brut resampling 16kHz (obligatoire)
+- Kimi-Audio : Audio brut resampling 16kHz (préféré)
+- DinoV2 : Mel spectrogramme
+
+### Métriques de comparaison des modèles (après avoir fait tourné même Random Forest sur embeddings)
+
+- Accuracy
+- F1 score macro
+- Confusion Matrix
+- ROC AUC (multi class)
 
 ## Points d'attention
 
-- Déséqulibre des classes (pondération des classes, oversampling)
+- Déséqulibre des classes (pondération des classes, oversampling, downsampling)
 - Peu de données (data augmentation)
 - Techniques de DL très légèrement meilleur que ML sur l'accélérométrie (https://doi.org/10.48550/arXiv.2509.08606)
+
+## Ligne de conduite
+
+- pré processing si nécessaire sur audio brut
+- Obtenir des embeddings avec chacun des cinq modèles via feature extractor
+- Implémenter un random forest similaire à celui de Samuel (pour approcher ses métriques obtenues avec Dinov2)
+- Entraîner le même random forest sur chacun des cinq jeux d'embeddings et calculer les métriques correspondantes
+- Benchmark sur les métriques
+- tester random forest avec des descripteurs manuels au lieu des embeddings
