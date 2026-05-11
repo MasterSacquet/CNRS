@@ -109,3 +109,5 @@ Temps de calcul embedding et dimension :
 
 
 07/05 : Utiliser le fichier random_forest_ipynb sur colab (j'ai changé le max features et le nombre d'arbre pour avoir un random forest générique qui ne soit pas optimisé sur dinov2)
+
+test
