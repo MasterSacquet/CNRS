@@ -2,3 +2,6 @@ articles/
 Data/
 embeddings/
 Autre (travail de Samuel)/
+Results/
+Scripts/Embedding_Extraction/embed_extraction_BEATs/beats
+Scripts/Embedding_Extraction/embed_extraction_BEATs/BEATs_iter3_plus_AS2M.pt

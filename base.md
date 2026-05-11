@@ -86,3 +86,26 @@ k-means sur embeddings, HDBSCAN
 - Entraîner le même random forest sur chacun des cinq jeux d'embeddings et calculer les métriques correspondantes
 - Benchmark sur les métriques
 - tester random forest avec des descripteurs manuels au lieu des embeddings
+
+
+
+
+
+- Utilisation de 15% de la base de donnée initiale (avec la même distribution de labels) FAIT (dans Data avec le "subset") (10 325 fichiers)
+- Calcul des embeddings sur cette nouvelle base de donnée pour chacun des cinq modèles
+- Entraînement et évaluation d'un même random forest sans PCA
+- Benchmark sur : temps de calcul des embeddings, macro f1 score, balanced accuracy
+
+Temps de calcul embedding et dimension :
+- DinoV2 : 12 minutes 28 secondes (colab avec gpu) ; dimension 1024 ; random forest entrainement 13 mins 51 s
+- BEATs : 4 minutes 38 secondes (colab avec gpu); dimension 768 ; random forest entrainement 5 mins 22 s
+- Kimi-Audio :
+- Dasheng :
+- VGG16 :
+- Descripteurs manuels :
+
+
+
+
+
+07/05 : Utiliser le fichier random_forest_ipynb sur colab (j'ai changé le max features et le nombre d'arbre pour avoir un random forest générique qui ne soit pas optimisé sur dinov2)
