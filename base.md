@@ -62,15 +62,17 @@ k-means sur embeddings, HDBSCAN
 - BEATs : Audio brut resampling 16kHz (préféré)
 - VGG16 : Mel spectrogramme
 - dasheng : Audio brut resampling 16kHz (obligatoire)
-- Kimi-Audio : Audio brut resampling 16kHz (préféré)
 - DinoV2 : Mel spectrogramme
 
 ### Métriques de comparaison des modèles (après avoir fait tourné même Random Forest sur embeddings)
 
-- Accuracy
+- Balanced Accuracy
 - F1 score macro
 - Confusion Matrix
 - ROC AUC (multi class)
+- Temps de calcul embeddings
+- Temps d'entraînement Random Forest
+- Dimension vecteur d'embeddings
 
 ## Points d'attention
 
@@ -78,36 +80,21 @@ k-means sur embeddings, HDBSCAN
 - Peu de données (data augmentation)
 - Techniques de DL très légèrement meilleur que ML sur l'accélérométrie (https://doi.org/10.48550/arXiv.2509.08606)
 
-## Ligne de conduite
+## Tâches
 
-- pré processing si nécessaire sur audio brut
-- Obtenir des embeddings avec chacun des cinq modèles via feature extractor
-- Implémenter un random forest similaire à celui de Samuel (pour approcher ses métriques obtenues avec Dinov2)
-- Entraîner le même random forest sur chacun des cinq jeux d'embeddings et calculer les métriques correspondantes
-- Benchmark sur les métriques
-- tester random forest avec des descripteurs manuels au lieu des embeddings
+### Benchmark embeddings transfer learning sur random forest 
 
-
-
-
-
-- Utilisation de 15% de la base de donnée initiale (avec la même distribution de labels) FAIT (dans Data avec le "subset") (10 325 fichiers)
+- Calculer les embeddings des données audio (soit sur donnée brute, soit sur mel-spectrogramme) pour chacun des cinq modèles identifiés (BEATs, DinoV2, VGG16, Kimi-Audio et Dasheng)
+- Entraînement sur chacun des cinq jeux de données ainsi qu'un jeu de donnée de descripteurs manuels d'un même Random Forest (n_estimators: 200, max_features: sqrt, criterion: gini, min_samples_leaf: 5)
+- Benchmark sur les métriques identifiées : macro f1 score, balanced accuracy, Confusion Matrix, ROC AUC (multi class), Temps de calcul embeddings, Temps d'entraînement Random Forest, Dimension vecteur d'embeddings
+- Utilisation de 15% de la base de donnée initiale (avec la même distribution de labels) (10 325 fichiers)
 - Calcul des embeddings sur cette nouvelle base de donnée pour chacun des cinq modèles
-- Entraînement et évaluation d'un même random forest sans PCA
-- Benchmark sur : temps de calcul des embeddings, macro f1 score, balanced accuracy
 
-Temps de calcul embedding et dimension :
-- DinoV2 : 12 minutes 28 secondes (colab avec gpu) ; dimension 1024 ; random forest entrainement 13 mins 51 s
-- BEATs : 4 minutes 38 secondes (colab avec gpu); dimension 768 ; random forest entrainement 5 mins 22 s
-- Kimi-Audio :
-- Dasheng :
-- VGG16 :
+#### Temps de calcul embedding, random forest, dimension, nombre de paramètres et taille du fichier d'embeddings (.parquet):
+
+- DinoV2 Large (dinov2_vitl14) : 12 minutes 28 secondes (colab avec gpu) ; dimension 1024 ; random forest entrainement 13 mins 51 s ; 300 millions params ; Taille fichier embeddings : 60 Mo
+- BEATs (BEATs_iter3_plus_AS2M) : 4 minutes 38 secondes (colab avec gpu) ; dimension 768 ; random forest entrainement 5 mins 22 s ; 90 millions params ; Taille fichier embeddings : 45 Mo
+- Dasheng (base) : 3 minutes (colab avec gpu); dimension 768 ; random forest entrainement 9 mins 36 s ; 86 millions params ; Taille fichier embeddings : 45 Mo
+- VGG16 : 30 mins 58 s (colab avec gpu) ; dimension 4096 ; Pas assez de RAM sur colab pour random forest (beaucoup trop gourmand) ; 68 millions params ; Taille fichier embeddings : 478 Mo
+- EfficientNet (EfficientNet-B0) : 10 mins 44 s (colab avec gpu) ; dimension 1280 ; random forest entrainement 26 mins 05 s ; 5.27 millions params ; Taille fichier embeddings : 188 Mo
 - Descripteurs manuels :
-
-
-
-
-
-07/05 : Utiliser le fichier random_forest_ipynb sur colab (j'ai changé le max features et le nombre d'arbre pour avoir un random forest générique qui ne soit pas optimisé sur dinov2)
-
-test
