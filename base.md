@@ -37,7 +37,7 @@ CNN sur spectrogrammes et CNN (U-Net https://doi.org/10.1016/j.ecoinf.2026.10376
 
 ## Apprentissage semi-supervisé (exploitation des annotations et des données non annotées)
 
-## Apprentissage auto-supervisé (créer les labels à partir des données / détecter des nouveaux comportements)
+## Apprentissage auto-supervisé (Détecter des changements dans le signal audio)
 
 Noise contrastive estimation (https://www.biorxiv.org/content/10.1101/2022.10.12.511740v2) : détecter les changements dans le signal audio (sans passer par le spectrogramme), tâche prétexte de pseudo-labels générés automatiquement avec calcul de dissimilarité entre fenêtres consécutives et détection de pic dans la dissimilarité.
 
@@ -82,7 +82,7 @@ k-means sur embeddings, HDBSCAN
 
 ## Tâches
 
-### Benchmark embeddings transfer learning sur random forest 
+### 1) Benchmark embeddings transfer learning sur random forest 
 
 - Calculer les embeddings des données audio (soit sur donnée brute, soit sur mel-spectrogramme) pour chacun des cinq modèles identifiés (BEATs, DinoV2, VGG16, Kimi-Audio et Dasheng)
 - Entraînement sur chacun des cinq jeux de données ainsi qu'un jeu de donnée de descripteurs manuels d'un même Random Forest (n_estimators: 200, max_features: sqrt, criterion: gini, min_samples_leaf: 5)
@@ -98,3 +98,13 @@ k-means sur embeddings, HDBSCAN
 - VGG16 : 30 mins 58 s (colab avec gpu) ; dimension 4096 ; Pas assez de RAM sur colab pour random forest (beaucoup trop gourmand) ; 68 millions params ; Taille fichier embeddings : 478 Mo
 - EfficientNet (EfficientNet-B0) : 10 mins 44 s (colab avec gpu) ; dimension 1280 ; random forest entrainement 26 mins 05 s ; 5.27 millions params ; Taille fichier embeddings : 188 Mo
 - Descripteurs manuels :
+
+### 2) Détection automatique de comportements via SSL + Clustering
+
+- Extraction d'embeddings sur base de données via soit modèle pré-entraîné (cf. benchmark précédent), soit modèle fait maison (cf. https://www.biorxiv.org/content/10.1101/2022.10.12.511740v2) -> représentation riche du signal audio
+- Cluster sur embeddings afin de segmenter en plusieurs classes (nombre de classe à déterminer automatiquement)
+- Associer clusters à un label via cluster labeling, majority vote
+
+A terme :
+
+- Entraînement transformer audio pour détecter ces classes
